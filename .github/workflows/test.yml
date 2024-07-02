@@ -1,0 +1,21 @@
+name: Label PRs to test branch
+
+on:
+  pull_request:
+    branches:
+      - test-label
+
+jobs:
+  add-label:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Add 'test' label to PR
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          pr_number=$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
+          gh pr edit "$pr_number" --add-label "test"
