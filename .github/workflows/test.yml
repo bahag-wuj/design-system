@@ -22,4 +22,4 @@ jobs:
       
       - name: Share a fun fact
         run: |
-         echo " Did you know? The shortest war in history was between Britain and Zanzibar on August 27, 1896. Zanzibar surrendered after 38 minutes."
+         echo "Did you know? The shortest war in history was between Britain and Zanzibar on August 27, 1896. Zanzibar surrendered after 38 minutes."
