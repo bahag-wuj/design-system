@@ -20,7 +20,15 @@ jobs:
           # pr_number=$(jq -r '.pull_request.number' < "$GITHUB_EVENT_PATH")
           # gh pr edit "$pr_number" --add-label "test"
           # echo "Label 'test' added to PR #$pr_number"
+          git config --global user.name 'Design Team'
+          git config --global user.email 'steve.henkel@bahag.com'
+          git status
+          git diff
+          git checkout main
           BRANCH_NAME="feature/token-changes-$(date +%Y-%m-%d-%H%M)"
+          git checkout -b $BRANCH_NAME
+          git commit -m "${{ github.event.client_payload.data.message }}"
+          git push --set-upstream origin $BRANCH_NAME
           PR_CREATION_OUTPUT=$(gh pr create --base main --head $BRANCH_NAME --title "test token changes" --body "")
           PR_NUMBER=$(echo "$PR_CREATION_OUTPUT" | jq -r '.number')
           gh pr edit "$PR_NUMBER" --add-label "figma-plugin"
