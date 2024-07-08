@@ -1,0 +1,48 @@
+name: Label PRs to test branch
+
+on:
+  pull_request:
+    # branches:
+    #   - test-add-label
+
+jobs:
+  add-label:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Check Yarn Version
+        run: yarn --version
+
+      - name: Add 'test' label to PR
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # pr_number=$(jq -r '.pull_request.number' < "$GITHUB_EVENT_PATH")
+          # gh pr edit "$pr_number" --add-label "test"
+          # echo "Label 'test' added to PR #$pr_number"
+          git config --global user.name 'Design Team'
+          git config --global user.email 'steve.henkel@bahag.com'
+          git status
+          git diff
+          BRANCH_NAME="feature/token-changes-$(date +%Y-%m-%d-%H%M%S)"
+          git checkout -b $BRANCH_NAME
+          echo "This is a test change to the README.md" >> README.md
+          git add README.md
+          git commit -m "testtt"
+          git push --set-upstream origin $BRANCH_NAME
+          gh pr create --base main --head $BRANCH_NAME --title "test token changes" --body ""
+          PR_NUMBER=$(gh pr view --json number | jq -r '.number')
+          gh pr edit "$PR_NUMBER" --add-label "figma-plugin" 
+          # jq -r '.number' <<< "$PR_CREATION_OUTPUT"
+          # PR_NUMBER=$(echo "$PR_CREATION_OUTPUT" | jq -r '.number')
+          # gh pr edit "$PR_NUMBER" --add-label "figma-plugin"
+
+      - name: Share a fun fact
+        run: |
+          echo " Did you know? The shortest war in history was between Britain and Zanzibar on August 27, 1896. Zanzibar surrendered after 38 minutes!"
