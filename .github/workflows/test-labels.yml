@@ -24,7 +24,7 @@ jobs:
           git config --global user.email 'steve.henkel@bahag.com'
           git status
           git diff
-          BRANCH_NAME="feature/token-changes-$(date +%Y-%m-%d-%H%M)"
+          BRANCH_NAME="feature/token-changes-$(date +%Y-%m-%d-%H%M%S)"
           git checkout -b $BRANCH_NAME
           echo "This is a test change to the README.md" >> README.md
           git add README.md
