@@ -26,6 +26,8 @@ jobs:
           git diff
           BRANCH_NAME="feature/token-changes-$(date +%Y-%m-%d-%H%M)"
           git checkout -b $BRANCH_NAME
+          echo "This is a test change to the README.md" >> README.md
+          git add README.md
           git commit -m "testtt"
           git push --set-upstream origin $BRANCH_NAME
           PR_CREATION_OUTPUT=$(gh pr create --base main --head $BRANCH_NAME --title "test token changes" --body "")
