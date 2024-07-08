@@ -27,7 +27,7 @@ jobs:
           git checkout main
           BRANCH_NAME="feature/token-changes-$(date +%Y-%m-%d-%H%M)"
           git checkout -b $BRANCH_NAME
-          git commit -m "${{ github.event.client_payload.data.message }}"
+          git commit -m "testtt"
           git push --set-upstream origin $BRANCH_NAME
           PR_CREATION_OUTPUT=$(gh pr create --base main --head $BRANCH_NAME --title "test token changes" --body "")
           PR_NUMBER=$(echo "$PR_CREATION_OUTPUT" | jq -r '.number')
