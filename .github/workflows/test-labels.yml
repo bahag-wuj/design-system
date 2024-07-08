@@ -13,6 +13,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Check Yarn Version
+        run: yarn --version
+
       - name: Add 'test' label to PR
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
