@@ -30,8 +30,7 @@ jobs:
           git add README.md
           git commit -m "testtt"
           git push --set-upstream origin $BRANCH_NAME
-          PR_CREATION_OUTPUT=$(gh pr create --base main --head $BRANCH_NAME --title "test token changes" --body "")
-          # PR_NUMBER=$(gh pr view --json number)
+          gh pr create --base main --head $BRANCH_NAME --title "test token changes" --body ""
           PR_NUMBER=$(gh pr view --json number | jq -r '.number')
           gh pr edit "$PR_NUMBER" --add-label "figma-plugin" 
           # jq -r '.number' <<< "$PR_CREATION_OUTPUT"
