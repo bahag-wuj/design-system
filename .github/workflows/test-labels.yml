@@ -31,8 +31,10 @@ jobs:
           git commit -m "testtt"
           git push --set-upstream origin $BRANCH_NAME
           PR_CREATION_OUTPUT=$(gh pr create --base main --head $BRANCH_NAME --title "test token changes" --body "")
-          PR_NUMBER=$(echo "$PR_CREATION_OUTPUT" | jq -r '.number')
-          gh pr edit "$PR_NUMBER" --add-label "figma-plugin"
+          echo "$PR_CREATION_OUTPUT"
+          jq -r '.number' <<< "$PR_CREATION_OUTPUT"
+          # PR_NUMBER=$(echo "$PR_CREATION_OUTPUT" | jq -r '.number')
+          # gh pr edit "$PR_NUMBER" --add-label "figma-plugin"
 
       - name: Share a fun fact
         run: |
