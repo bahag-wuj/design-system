@@ -1,0 +1,51 @@
+name: Continuous Integration
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+jobs:
+  'ci':
+    name: "Install / Build / Test"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          registry-url: 'https://npm.pkg.github.com'
+    
+      - name: Enable Corepack
+        run: corepack enable
+
+      - name: Setup .yarnrc.yml
+        run: |
+            yarn config set npmScopes.bahag.npmRegistryServer https://npm.pkg.github.com
+            yarn config set npmScopes.bahag.npmAlwaysAuth false
+            yarn config set npmScopes.bahag.npmAuthToken ${{ secrets.GITHUB_TOKEN }}
+  
+      - name: Yarn verify
+        run: yarn config get 'npmScopes["bahag"]'
+
+      - name: Install Dependencies
+        run: yarn 
+
+      - name: Creating .npmrc
+        run: |
+          cat << EOF > "$HOME/.npmrc"
+            //npm.pkg.github.com/:_authToken=$NPM_TOKEN
+          EOF
+        env:
+          NPM_TOKEN: ${{ secrets.GH_TOKEN }}
+
+      - name: Build
+        run: yarn build
+
+      - name: Run tests
+        run: yarn test

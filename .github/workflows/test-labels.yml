@@ -2,8 +2,8 @@ name: Label PRs to test branch
 
 on:
   pull_request:
-    # branches:
-    #   - test-add-label
+    branches:
+      - test-add-label
 
 jobs:
   add-label:
